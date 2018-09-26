@@ -1,94 +1,186 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+
+
+@{
+    //   ViewData["Title"] = Model.DisplayName;
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+<h2>Dashboard</h2>
+
+<form asp-controller="Home" asp-action="Index" method="GET">
+  
+  <row>
+    <div class="col-sm-6">Cost Center</div>
+    <div class="col-sm-6">Account</div>
+  </row>
+  <row>
+    <div class="col-sm-6">
+      <select name="cc" id="cc" class="form-control" asp-items="@ViewBag.CostCentersList">
+
+    </select>
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
+
+    <div class="col-sm-6">
+      <select name="act" id="act" class="form-control" asp-items="@ViewBag.AccountsList">
+        
+      </select>
     </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
+    
+</row>
+<row>
+    <div class="col-sm-offset-2 col-sm-10">
+      <input type="submit" class="btn btn-default" value="Find">
     </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>
+    </row>
+</form>
+
+<br><br>
+<br><br>
+<br><br>
+
+<table class="table">
+  
+  <tr>
+    <th></th>
+    <th><a href="#" id="rectype1" class="rectypes">@ViewBag.Types[0]</a></th>
+    <th><a href="#" id="rectype2" class="rectypes">@ViewBag.Types[1]</a></th>
+    <th><a href="#" id="rectype3" class="rectypes">@ViewBag.Types[2]</a></th>
+    <th><a href="#" id="rectype4" class="rectypes">@ViewBag.Types[3]</a></th>
+    <th><a href="#" id="rectype5" class="rectypes">@ViewBag.Types[4]</a></th>
+    <th><a href="#" id="rectype6" class="rectypes">@ViewBag.Types[5]</a></th>
+  </tr>
+  <tr>
+    <th></th>
+    <th><a href="#" id="year1" class="years">@ViewBag.years[0]</a></th>
+    <th><a href="#" id="year2" class="years">@ViewBag.years[1]</a></th>
+    <th><a href="#" id="year3" class="years">@ViewBag.years[2]</a></th>
+    <th><a href="#" id="year4" class="years">@ViewBag.years[3]</a></th>
+    <th><a href="#" id="year5" class="years">@ViewBag.years[4]</a></th>
+    <th><a href="#" id="year6" class="years">@ViewBag.years[5]</a></th>
+  </tr>
+  <tr class="row1">
+    <td>January</td>
+    <td class="col1"><a href="#" id="col1row1" class="datagrid">@ViewBag.col1row1</a></td>
+    <td class="col2"><a href="#" id="col2row1" class="datagrid">@ViewBag.col2row1</a></td>
+    <td class="col3"><a href="#" id="col3row1" class="datagrid">@ViewBag.col3row1</a></td>
+    <td class="col4"><a href="#" id="col4row1" class="datagrid">@ViewBag.col4row1</a></td>
+    <td class="col5"><a href="#" id="col5row1" class="datagrid">@ViewBag.col5row1</a></td>
+    <td class="col6"><a href="#" id="col6row1" class="datagrid">@ViewBag.col6row1</a></td>
+  </tr>
+  <tr class="row2">
+    <td>Feburary</td>
+    <td class="col1"><a href="#" id="col1row2" class="datagrid">@ViewBag.col1row2</a></td>
+    <td class="col2"><a href="#" id="col2row2" class="datagrid">@ViewBag.col2row2</a></td>
+    <td class="col3"><a href="#" id="col3row2" class="datagrid">@ViewBag.col3row2</a></td>
+    <td class="col4"><a href="#" id="col4row2" class="datagrid">@ViewBag.col4row2</a></td>
+    <td class="col5"><a href="#" id="col5row2" class="datagrid">@ViewBag.col5row2</a></td>
+    <td class="col6"><a href="#" id="col6row2" class="datagrid">@ViewBag.col6row2</a></td>
+  </tr>
+  <tr class="row3">
+    <td>March</td>
+    <td class="col1"><a href="#" id="col1row3" class="datagrid">@ViewBag.col1row3</a></td>
+    <td class="col2"><a href="#" id="col2row3" class="datagrid">@ViewBag.col2row3</a></td>
+    <td class="col3"><a href="#" id="col3row3" class="datagrid">@ViewBag.col3row3</a></td>
+    <td class="col4"><a href="#" id="col4row3" class="datagrid">@ViewBag.col4row3</a></td>
+    <td class="col5"><a href="#" id="col5row3" class="datagrid">@ViewBag.col5row3</a></td>
+    <td class="col6"><a href="#" id="col6row3" class="datagrid">@ViewBag.col6row3</a></td>
+  </tr>
+  <tr class="row4">
+    <td>April</td>
+    <td class="col1"><a href="#" id="col1row4" class="datagrid">@ViewBag.col1row4</a></td>
+    <td class="col2"><a href="#" id="col2row4" class="datagrid">@ViewBag.col2row4</a></td>
+    <td class="col3"><a href="#" id="col3row4" class="datagrid">@ViewBag.col3row4</a></td>
+    <td class="col4"><a href="#" id="col4row4" class="datagrid">@ViewBag.col4row4</a></td>
+    <td class="col5"><a href="#" id="col5row4" class="datagrid">@ViewBag.col5row4</a></td>
+    <td class="col6"><a href="#" id="col6row4" class="datagrid">@ViewBag.col6row4</a></td>
+  </tr>
+  <tr class="row5">
+    <td>May</td>
+    <td class="col1"><a href="#" id="col1row5" class="datagrid">@ViewBag.col1row5</a></td>
+    <td class="col2"><a href="#" id="col2row5" class="datagrid">@ViewBag.col2row5</a></td>
+    <td class="col3"><a href="#" id="col3row5" class="datagrid">@ViewBag.col3row5</a></td>
+    <td class="col4"><a href="#" id="col4row5" class="datagrid">@ViewBag.col4row5</a></td>
+    <td class="col5"><a href="#" id="col5row5" class="datagrid">@ViewBag.col5row5</a></td>
+    <td class="col6"><a href="#" id="col6row5" class="datagrid">@ViewBag.col6row5</a></td>
+  </tr>
+  <tr class="row6">
+    <td>June</td>
+    <td class="col1"><a href="#" id="col1row6" class="datagrid">@ViewBag.col1row6</a></td>
+    <td class="col2"><a href="#" id="col2row6" class="datagrid">@ViewBag.col2row6</a></td>
+    <td class="col3"><a href="#" id="col3row6" class="datagrid">@ViewBag.col3row6</a></td>
+    <td class="col4"><a href="#" id="col4row6" class="datagrid">@ViewBag.col4row6</a></td>
+    <td class="col5"><a href="#" id="col5row6" class="datagrid">@ViewBag.col5row6</a></td>
+    <td class="col6"><a href="#" id="col6row6" class="datagrid">@ViewBag.col6row6</a></td>
+  </tr>
+  <tr class="row7">
+    <td>July</td>
+    <td class="col1"><a href="#" id="col1row7" class="datagrid">@ViewBag.col1row7</a></td>
+    <td class="col2"><a href="#" id="col2row7" class="datagrid">@ViewBag.col2row7</a></td>
+    <td class="col3"><a href="#" id="col3row7" class="datagrid">@ViewBag.col3row7</a></td>
+    <td class="col4"><a href="#" id="col4row7" class="datagrid">@ViewBag.col4row7</a></td>
+    <td class="col5"><a href="#" id="col5row7" class="datagrid">@ViewBag.col5row7</a></td>
+    <td class="col6"><a href="#" id="col6row7" class="datagrid">@ViewBag.col6row7</a></td>
+  </tr>
+  <tr class="row8">
+    <td>August</td>
+    <td class="col1"><a href="#" id="col1row8" class="datagrid">@ViewBag.col1row8</a></td>
+    <td class="col2"><a href="#" id="col2row8" class="datagrid">@ViewBag.col2row8</a></td>
+    <td class="col3"><a href="#" id="col3row8" class="datagrid">@ViewBag.col3row8</a></td>
+    <td class="col4"><a href="#" id="col4row8" class="datagrid">@ViewBag.col4row8</a></td>
+    <td class="col5"><a href="#" id="col5row8" class="datagrid">@ViewBag.col5row8</a></td>
+    <td class="col6"><a href="#" id="col6row8" class="datagrid">@ViewBag.col6row8</a></td>
+  </tr>
+  <tr class="row9">
+    <td>September</td>
+    <td class="col1"><a href="#" id="col1row9" class="datagrid">@ViewBag.col1row9</a></td>
+    <td class="col2"><a href="#" id="col2row9" class="datagrid">@ViewBag.col2row9</a></td>
+    <td class="col3"><a href="#" id="col3row9" class="datagrid">@ViewBag.col3row9</a></td>
+    <td class="col4"><a href="#" id="col4row9" class="datagrid">@ViewBag.col4row9</a></td>
+    <td class="col5"><a href="#" id="col5row9" class="datagrid">@ViewBag.col5row9</a></td>
+    <td class="col6"><a href="#" id="col6row9" class="datagrid">@ViewBag.col6row9</a></td>
+  </tr>
+  <tr class="row10">
+    <td>October</td>
+    <td class="col1"><a href="#" id="col1row10" class="datagrid">@ViewBag.col1row10</a></td>
+    <td class="col2"><a href="#" id="col2row10" class="datagrid">@ViewBag.col2row10</a></td>
+    <td class="col3"><a href="#" id="col3row10" class="datagrid">@ViewBag.col3row10</a></td>
+    <td class="col4"><a href="#" id="col4row10" class="datagrid">@ViewBag.col4row10</a></td>
+    <td class="col5"><a href="#" id="col5row10" class="datagrid">@ViewBag.col5row10</a></td>
+    <td class="col6"><a href="#" id="col6row10" class="datagrid">@ViewBag.col6row10</a></td>
+  </tr>
+  <tr class="row11">
+    <td>November</td>
+    <td class="col1"><a href="#" id="col1row11" class="datagrid">@ViewBag.col1row11</a></td>
+    <td class="col2"><a href="#" id="col2row11" class="datagrid">@ViewBag.col2row11</a></td>
+    <td class="col3"><a href="#" id="col3row11" class="datagrid">@ViewBag.col3row11</a></td>
+    <td class="col4"><a href="#" id="col4row11" class="datagrid">@ViewBag.col4row11</a></td>
+    <td class="col5"><a href="#" id="col5row11" class="datagrid">@ViewBag.col5row11</a></td>
+    <td class="col6"><a href="#" id="col6row11" class="datagrid">@ViewBag.col6row11</a></td>
+  </tr>
+  <tr class="row12">
+    <td>December</td>
+    <td class="col1"><a href="#" id="col1row12" class="datagrid">@ViewBag.col1row12</a></td>
+    <td class="col2"><a href="#" id="col2row12" class="datagrid">@ViewBag.col2row12</a></td>
+    <td class="col3"><a href="#" id="col3row12" class="datagrid">@ViewBag.col3row12</a></td>
+    <td class="col4"><a href="#" id="col4row12" class="datagrid">@ViewBag.col4row12</a></td>
+    <td class="col5"><a href="#" id="col5row12" class="datagrid">@ViewBag.col5row12</a></td>
+    <td class="col6"><a href="#" id="col6row12" class="datagrid">@ViewBag.col6row12</a></td>
+  </tr>
+
+
+
+
+
+
+
+
+</table>
+
+
+
+
+
+
+
+
+

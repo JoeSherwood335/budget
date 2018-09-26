@@ -237,3 +237,4 @@ appsettings.Development.json
 .SQL/
 
 *.db
+app.db
