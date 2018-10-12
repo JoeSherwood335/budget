@@ -1,14 +1,13 @@
 
 
 @{
-    //   ViewData["Title"] = Model.DisplayName;
-}
+       ViewData["Title"] = "Dashboard";
+  }
 
 
 <h2>Dashboard</h2>
 
 <form asp-controller="Home" asp-action="Index" method="GET">
-  
   <row>
     <div class="col-sm-6">Cost Center</div>
     <div class="col-sm-6">Account</div>
@@ -17,21 +16,19 @@
     <div class="col-sm-6">
       <select name="cc" id="cc" class="form-control" asp-items="@ViewBag.CostCentersList">
 
-    </select>
+      </select>
     </div>
-
     <div class="col-sm-6">
       <select name="act" id="act" class="form-control" asp-items="@ViewBag.AccountsList">
         
       </select>
     </div>
-    
-</row>
-<row>
-    <div class="col-sm-offset-2 col-sm-10">
+  </row>
+  <row>
+    <div class="col-sm-12">
       <input type="submit" class="btn btn-default" value="Find">
     </div>
-    </row>
+  </row>
 </form>
 
 <br><br>
@@ -60,7 +57,7 @@
   </tr>
   <tr class="row1">
     <td>January</td>
-    <td class="col1"><a href="#" id="col1row1" class="datagrid">@ViewBag.col1row1</a></td>
+    <td class="col1"><a href="#" asp-disabled="t" id="col1row1">@ViewBag.col1row1</a></td>
     <td class="col2"><a href="#" id="col2row1" class="datagrid">@ViewBag.col2row1</a></td>
     <td class="col3"><a href="#" id="col3row1" class="datagrid">@ViewBag.col3row1</a></td>
     <td class="col4"><a href="#" id="col4row1" class="datagrid">@ViewBag.col4row1</a></td>
@@ -167,19 +164,35 @@
     <td class="col6"><a href="#" id="col6row12" class="datagrid">@ViewBag.col6row12</a></td>
   </tr>
 
-
-
-
-
-
-
-
 </table>
 
+<input asp-
 
 
 
+@section Scripts {
 
+  <script>
+
+      var d = document.getElementsByClassName("datagrid")
+
+      var i;
+    
+      for (i = 0; i < d.length; i++) {
+
+          d[i].onclick = onclick;
+
+      }
+
+      function onclick() {
+        window.location.href = "/Home/Update?GridIndex=" + this.id
+
+      }
+
+
+  </script>
+
+}
 
 
 

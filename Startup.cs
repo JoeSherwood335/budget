@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using budget.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace budget
 {
@@ -30,9 +31,13 @@ namespace budget
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => true; 
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddDbContext<Models.BudgetMVCContext>(options => 
+                    options.UseSqlServer(Configuration.GetConnectionString("BudgetData"))
+                );
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
@@ -40,6 +45,16 @@ namespace budget
                     
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Add application services.
+            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            //services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            //services.AddTransient<imyapp, myapp>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -54,7 +69,7 @@ namespace budget
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");    
                 app.UseHsts();
             }
 
@@ -66,6 +81,12 @@ namespace budget
 
             app.UseMvc(routes =>
             {
+
+                routes.MapRoute(
+                    name: "Notes",
+                    template: "DashBoard/{cc}/{act}",
+                    defaults: new { controller = "Home", action = "Index" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

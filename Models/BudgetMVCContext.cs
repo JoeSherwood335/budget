@@ -15,6 +15,7 @@ namespace budget.Models
         {
         }
 
+
         public virtual DbSet<AccountCategories> AccountCategories { get; set; }
         public virtual DbSet<AccountGroups> AccountGroups { get; set; }
         public virtual DbSet<Accounts> Accounts { get; set; }
@@ -33,17 +34,20 @@ namespace budget.Models
         public virtual DbSet<Users> Users { get; set; }
 
         public virtual DbQuery<vArchiveDataGrid> vArchiveDataGrid { get; set;}
+        public virtual DbQuery<CurrentBudgetYear> CurrentBudgetYears { get; set;}
 
-        // Unable to generate entity type for table 'cfg.CurrentBudgetYear'. Please see the warning messages.
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+         //Unable to generate entity type for table 'cfg.CurrentBudgetYear'. Please see the warning messages.
+
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+
                 optionsBuilder.UseSqlServer("Server=apollo.vgs.vgsjob.net;Database=BudgetMVC;User ID=sa;Password=IL0veM@rvelM0vies;Application Name=BudgetApp");
             }
-        }
+        }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

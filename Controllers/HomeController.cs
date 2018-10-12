@@ -6,35 +6,65 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using budget.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using budget.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace budget.Controllers
 {
+
+    [Authorize]
     public class HomeController : Controller
     {
+        private Models.BudgetMVCContext dc { get; set; }
+        private readonly ILogger<HomeController> logger;
+        private IHttpContextAccessor HttpContextAccessor;
+        private readonly UserManager<ApplicationUser> userManager;
+        private ApplicationUser currentuser;
+        public HomeController(
+            Models.BudgetMVCContext context,
+            UserManager<ApplicationUser> _userManager,
+            IHttpContextAccessor _httpContext,
+            ILogger<HomeController> _logger
+          ){
+            dc = context;
+            logger = _logger;
+            userManager = _userManager;
+            HttpContextAccessor = _httpContext;
+             currentuser = GetCurrentUserAsync().Result;
+      
+        }
+
         public IActionResult Index(string cc,int? act)
         {
             init_grid();
 
-            cc = (!string.IsNullOrEmpty(cc))  ? cc : "000";
-            act = (act.HasValue)  ? act.Value : 0;
-         
-            var dc = new BudgetMVCContext();
-
-            var b1 = from Models.CostCenters d in dc.CostCenters orderby d.CostCenter select d;
-            
             string[] years = (from Models.Dashboard d in dc.Dashboard where d.Name.Contains("YearCol") orderby d.Name select d.Value).ToArray();
             string[] Types = (from Models.Dashboard d in dc.Dashboard where d.Name.Contains("TypeCol") orderby d.Name select d.Value).ToArray();
 
-            var c = from b in dc.CostCenters join a in dc.TemplateDetails on b.CostCenter equals a.CostCenter
-                    where (!b.Discontinued) && a.Year == "2019"
+            var ListOfMyCostCenters = (from b in dc.CostCenters 
+                      join a in dc.TemplateDetails on b.CostCenter equals a.CostCenter 
+                        join y in dc.CurrentBudgetYears on a.Year equals y.Year
+                    where (!b.Discontinued) && a.UserGroup1 == currentuser.BudgetUserId//a.Year == "2019"
                     orderby b.CostCenter
-                    select new {CostCenter = b.CostCenter, CostCenterName = $@"{b.CostCenter} - {b.CostCenterName}" };
-                   
-            var alist = from bi in dc.Accounts orderby bi.Account
-                        select new {Account = bi.Account, AccountName = $@"{bi.Account} - {bi.AccountDesc}"};
+                    select new {CostCenter = b.CostCenter, CostCenterName = $@"{b.CostCenter} - {b.CostCenterName}" }).ToList();
 
-            ViewBag.CostCentersList = new SelectList(c.ToList(), "CostCenter", "CostCenterName",cc);
-            ViewBag.AccountsList = new SelectList(alist.ToList(), "Account", "AccountName",act);
+            var ListOfAccounts = from bi in dc.Accounts orderby bi.Account
+                        select new {Account = bi.Account, AccountName = $@"{bi.Account} - {bi.AccountDesc}"};   
+
+            if (ListOfMyCostCenters.Count() == 0)                
+                        throw new budget.Exceptions.UserNotAuthorizedForAnyCostCenterException();
+
+            cc = (!string.IsNullOrEmpty(cc))  ? cc : ListOfMyCostCenters.First().CostCenter ;
+            act = (act.HasValue)  ? act.Value : ListOfAccounts.First().Account;
+            
+            if (!ListOfMyCostCenters.Any(x => x.CostCenter == cc))
+                        throw new budget.Exceptions.CostCenterNotAuthorizedException(new Exceptions.CostCenterModel(cc));
+
+            ViewBag.CostCentersList = new SelectList(ListOfMyCostCenters.ToList(), "CostCenter", "CostCenterName",cc);
+            ViewBag.AccountsList = new SelectList(ListOfAccounts.ToList(), "Account", "AccountName",act);
             
             IQueryable<Models.vArchiveDataGrid> dg = from Models.vArchiveDataGrid a in dc.vArchiveDataGrid 
                                           where a.CostCenter == cc && a.Account == act
@@ -44,10 +74,11 @@ namespace budget.Controllers
             ViewBag.Types = Types;
 
             int col = 1;
+
             foreach (string year in years) {
               foreach (Models.vArchiveDataGrid d in dg.Where(e => e.Year == year && e.RecordTypeName  == Types[col-1]).ToList())
               {
-                Console.WriteLine($@"{col} {year}");
+                
                 ViewData[$@"col{col}row1"]  = d.January.ToString("c");
                 ViewData[$@"col{col}row2"]  = d.Feburary.ToString("c");
                 ViewData[$@"col{col}row3"]  = d.March.ToString("c");
@@ -65,6 +96,27 @@ namespace budget.Controllers
             }
            
             return View();
+        }
+
+        public IActionResult Update(string GridIndex)
+        {
+          //var v = from a in dc.vArchiveDataGrid 
+          //        where a.
+          Console.WriteLine(GridIndex);
+          // col4row11
+
+          GridIndex.Split();
+
+          return View();
+        }
+
+        [HttpPost]
+        public IActionResult Update(string GridIndex, decimal Ammount)
+        {
+          
+          Console.WriteLine(GridIndex);
+
+          return View();
         }
 
 
@@ -88,6 +140,8 @@ namespace budget.Controllers
         }
 
         void init_grid(){
+
+
           ViewBag.col1row1 = "$0.00";        
           ViewBag.col2row1 = "$0.00";
           ViewBag.col3row1 = "$0.00";          
@@ -162,5 +216,13 @@ namespace budget.Controllers
           ViewBag.col6row12 = "$0.00";
           
         }
-    }
-}
+
+      private Task<ApplicationUser> GetCurrentUserAsync()
+      {
+        return userManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+
+      }
+
+
+    } // end home controller
+} // end namespace
